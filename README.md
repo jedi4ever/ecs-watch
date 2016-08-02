@@ -27,6 +27,7 @@ This is useful as a side-kick for services that are not http based (for example 
 
 # Reading
 - <https://aws.amazon.com/blogs/compute/service-discovery-via-consul-with-amazon-ecs/>
+- <https://aws.amazon.com/blogs/compute/service-discovery-an-amazon-ecs-reference-architecture/>
 - <http://www.slideshare.net/AmazonWebServices/microservices-and-amazon-ecs>
 - <https://segment.com/blog/rebuilding-our-infrastructure/>
 - <https://github.com/rhockenbury/trace>
