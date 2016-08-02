@@ -1,0 +1,31 @@
+{
+	Failures: [],
+	Tasks: [{
+		ClusterArn: "arn:aws:ecs:eu-west-1:XXXXXXXXXXXX:cluster/cluster-name",
+		ContainerInstanceArn: "arn:aws:ecs:eu-west-1:XXXXXXXXXXXX:container-instance/d01c5f15-a86a-4181-8f45-df4ed3bd4e5d",
+		Containers: [{
+			ContainerArn: "arn:aws:ecs:eu-west-1:XXXXXXXXXXXX:container/e27f6e05-7faa-405a-9e70-cbd2cc6f3bab",
+			LastStatus: "RUNNING",
+			Name: "jenkins",
+			NetworkBindings: [{
+				BindIP: "0.0.0.0",
+				ContainerPort: 80,
+				HostPort: 32769,
+				Protocol: "tcp"
+			}],
+			TaskArn: "arn:aws:ecs:eu-west-1:XXXXXXXXXXXX:task/e3600e19-bc65-4e6d-92a8-2053426d71e6"
+		}],
+		CreatedAt: 2016-08-01 10:46:42 +0000 UTC,
+		DesiredStatus: "RUNNING",
+		LastStatus: "RUNNING",
+		Overrides: {
+			ContainerOverrides: [{
+				Name: "jenkins"
+			}]
+		},
+		StartedAt: 2016-08-01 10:46:46 +0000 UTC,
+		StartedBy: "ecs-svc/9223370566806393598",
+		TaskArn: "arn:aws:ecs:eu-west-1:XXXXXXXXXXXX:task/e3600e19-bc65-4e6d-92a8-2053426d71e6",
+		TaskDefinitionArn: "arn:aws:ecs:eu-west-1:XXXXXXXXXXXX:task-definition/apache:4"
+	}]
+}
