@@ -1,4 +1,7 @@
 # Description
+
+**CAVEAT!** this is WIP for now - soon to be released
+
 When you want to run microservices inside of an ECS cluster , the easiest/standard/recommended way is to register Services with ELBs.
 You can register the ELBs in DNS and each service is instanly available. No need for a service discovery.
 
