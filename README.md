@@ -30,11 +30,11 @@ OPTIONS:
 ```
 
 ## Generate file using Template
-The first use of *elb-watch* is to have a command similar to docker-gen/nginx-proxy where a template is populated and a signal is send to a container.
+The use of *elb-watch* to have a command similar to docker-gen/nginx-proxy where a template is populated and a signal is send to a container.
 instead of reading the state from Consul, it reads the state from ECS.
 
 ## Route53 sidekick
-The second use of *elb-watch* is to find the connection details of container (ip/port) and update a record in route53.
+The use of *elb-watch* to find the connection details of container (ip/port) and update a record in route53.
 This is useful as a side-kick for services that are not http based (for example your redis server)
 
 # Related projects
