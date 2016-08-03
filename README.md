@@ -7,6 +7,28 @@ As the number of microservices grow , so increases the cost of the ELBs. Especia
 The alternative is to use a discovery service and a reverse proxy like (Nginx, HaProxy, Traefik, Kong, Fabio).
 Most tools/examples I found used Consul. But then I thought, why duplicate the ECS state in consul? That way you can avoid running a consul cluster.
 
+## Report
+```
+NAME:
+   ecs-watch report - reports all containers and ports
+
+USAGE:
+   ecs-watch report [command options] [arguments...]
+
+OPTIONS:
+   --cluster value  (default: "default") [$ECSWATCH_CLUSTER]
+   --region value   (default: "eu-west-1") [$ECSWATCH_REGION]
+```
+
+```
++-----------+----------+---------------+----------------+-----------+---------------------+-----------+-------------+---------+--------------------+
+|   NAME    | HOSTPORT | CONTAINERPORT |    PUBLICIP    | PRIVATEIP |     INSTANCEID      |   IMAGE   | VIRTUALHOST | STATUS  |      CLUSTER       |
++-----------+----------+---------------+----------------+-----------+---------------------+-----------+-------------+---------+--------------------+
+| jenkins-b |    32768 |            80 | 52.209.248.211 | 10.0.4.42 | i-08d46a56b977b8a62 | httpd:2.4 |             | RUNNING | staging-asg        |
+| jenkins-a |    32769 |            80 | 52.209.248.211 | 10.0.4.42 | i-08d46a56b977b8a62 | httpd:2.4 |             | RUNNING | staging-asg        |
++-----------+----------+---------------+----------------+-----------+---------------------+-----------+-------------+---------+--------------------+
+```
+
 ## Generate file using Template
 The first use of *elb-watch* is to have a command similar to docker-gen/nginx-proxy where a template is populated and a signal is send to a container.
 instead of reading the state from Consul, it reads the state from ECS.
