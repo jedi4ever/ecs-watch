@@ -7,8 +7,11 @@ type EcsWatchContainerInfo struct {
 	TaskArn       string
 	HostPort      int64
 	ContainerPort int64
-	ImageName     string
+	Image         string
 	Name          string
+	Status        string
+	Environment   map[string]string
+	Labels        map[string]string
 }
 
 type EcsWatchContainersInfo []EcsWatchContainerInfo
@@ -21,14 +24,19 @@ type EcsWatchContainerInstanceInfo struct {
 }
 
 type EcsWatchInfoItem struct {
+	Cluster       string
 	InstanceArn   string
+	InstanceId    string
 	TaskArn       string
 	ContainerPort int64
 	HostPort      int64
-	ImageName     string
+	Image         string
+	Status        string
 	Name          string
 	PublicIp      string
 	PrivateIp     string
+	Environment   map[string]string
+	Labels        map[string]string
 }
 
 type EcsWatchEc2InstanceInfo struct {

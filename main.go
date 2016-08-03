@@ -2,7 +2,7 @@ package main
 
 import (
 	//"errors"
-	"fmt"
+	//"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ecs"
@@ -39,11 +39,12 @@ func main() {
 			Name:  "report",
 			Usage: "reports all containers and ports",
 			Flags: []cli.Flag{
-				cli.StringFlag{Name: "ecs-cluster", Value: "default", EnvVar: "ECS_CLUSTER"},
+				cli.StringFlag{Name: "cluster", Value: "default", EnvVar: "ECSWATCH_CLUSTER"},
+				cli.StringFlag{Name: "region", Value: "eu-west-1", EnvVar: "ECSWATCH_REGION"},
 			},
 			Action: func(c *cli.Context) error {
-				svc := ecs.New(session.New(), &aws.Config{Region: aws.String("eu-west-1")})
-				clusterName = c.String("ecs-cluster")
+				svc := ecs.New(session.New(), &aws.Config{Region: aws.String(c.String("region"))})
+				clusterName = c.String("cluster")
 				debug(clusterName)
 				report(svc, clusterName)
 				return nil
@@ -52,18 +53,5 @@ func main() {
 	}
 
 	app.Run(os.Args)
-
-}
-
-func report(svc *ecs.ECS, clusterName string) {
-	var watchInfo, err = getEcsWatchInfo(svc, clusterName)
-
-	if err != nil {
-		debug("[%s] Retrieving report ECS Cluster failed: %s", clusterName, err.Error())
-	}
-
-	for _, info := range *watchInfo {
-		fmt.Println(info)
-	}
 
 }
