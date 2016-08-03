@@ -37,6 +37,12 @@ func main() {
 				cli.StringFlag{Name: "cluster", Value: "default", EnvVar: "ECSWATCH_CLUSTER"},
 				cli.StringFlag{Name: "region", Value: "eu-west-1", EnvVar: "ECSWATCH_REGION"},
 				cli.StringFlag{Name: "template-file", EnvVar: "ECSWATCH_TEMPLATE_FILE"},
+				cli.StringFlag{Name: "output-file", EnvVar: "ECSWATCH_OUTPUT_FILE"},
+				cli.StringFlag{Name: "notify-container", EnvVar: "ECSWATCH_NOTIFY_CONTAINER"},
+				cli.StringFlag{Name: "docker-signal", Value: "SIGHUP", EnvVar: "ECSWATCH_DOCKER_SIGNAL"},
+				cli.StringFlag{Name: "docker-container", EnvVar: "ECSWATCH_DOCKER_CONTAINER"},
+				cli.StringFlag{Name: "docker-endpoint", Value: "unix:///var/run/docker.sock", EnvVar: "ECSWATCH_DOCKER_ENDPOINT"},
+				cli.StringFlag{Name: "watch", Value: "false", EnvVar: "ECSWATCH_WATCH"},
 			},
 			Action: func(c *cli.Context) error {
 
@@ -49,7 +55,17 @@ func main() {
 				clusterName = c.String("cluster")
 				templateFile := c.String("template-file")
 				debug(clusterName)
-				err := generate(svc, clusterName, templateFile, templateFile)
+
+				options := make(map[string]string)
+				options["output-file"] = c.String("output-file")
+				options["notify-container"] = c.String("notify-container")
+
+				options["docker-container"] = c.String("docker-container")
+				options["docker-endpoint"] = c.String("docker-endpoint")
+				options["docker-signal"] = c.String("docker-signal")
+				options["watch"] = c.String("watch")
+
+				err := generate(svc, clusterName, templateFile, options)
 				if err != nil {
 					debug(err.Error())
 				}

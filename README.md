@@ -33,6 +33,25 @@ OPTIONS:
 The use of *elb-watch* to have a command similar to docker-gen/nginx-proxy where a template is populated and a signal is send to a container.
 instead of reading the state from Consul, it reads the state from ECS.
 
+```
+NAME:
+   ecs-watch generate - generates a file
+
+USAGE:
+   ecs-watch generate [command options] [arguments...]
+
+OPTIONS:
+   --cluster value           (default: "default") [$ECSWATCH_CLUSTER]
+   --region value            (default: "eu-west-1") [$ECSWATCH_REGION]
+   --template-file value      [$ECSWATCH_TEMPLATE_FILE]
+   --output-file value        [$ECSWATCH_OUTPUT_FILE]
+   --notify-container value   [$ECSWATCH_NOTIFY_CONTAINER]
+   --docker-signal value     (default: "SIGHUP") [$ECSWATCH_DOCKER_SIGNAL]
+   --docker-container value   [$ECSWATCH_DOCKER_CONTAINER]
+   --docker-endpoint value   (default: "unix:///var/run/docker.sock") [$ECSWATCH_DOCKER_ENDPOINT]
+   --watch value             (default: "false") [$ECSWATCH_WATCH]
+```
+
 ## Route53 sidekick
 The use of *elb-watch* to find the connection details of container (ip/port) and update a record in route53.
 This is useful as a side-kick for services that are not http based (for example your redis server)

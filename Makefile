@@ -11,7 +11,7 @@ report: build
 	$(STS_EXEC) ./ecs-watch report
 
 generate: build
-	$(STS_EXEC) ./ecs-watch generate --template-file nginx.tmpl
+	$(STS_EXEC) ./ecs-watch generate --template-file nginx.tmpl --docker-container ecswatch_nginx_1
 
 get:
 	go get github.com/tj/go-debug

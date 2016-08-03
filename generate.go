@@ -17,12 +17,12 @@ import (
 	"time"
 )
 
-func generate(svc *ecs.ECS, clusterName string, templateFile string, outputFile string) error {
+func generate(svc *ecs.ECS, clusterName string, templateFile string, options map[string]string) error {
 
 	tickChan := time.NewTicker(time.Second * 2).C
 	doneChan := make(chan bool)
 
-	result, err := generateOne(svc, clusterName, templateFile, outputFile)
+	result, err := generateOne(svc, clusterName, templateFile, options)
 
 	if err != nil {
 		debug("[%s] Generating template %s failed : %s", clusterName, templateFile, err.Error())
@@ -33,16 +33,17 @@ func generate(svc *ecs.ECS, clusterName string, templateFile string, outputFile 
 	for {
 		select {
 		case <-tickChan:
-			result, err := generateOne(svc, clusterName, templateFile, outputFile)
+			result, err := generateOne(svc, clusterName, templateFile, options)
 			if err != nil {
 				debug("[%s] Generating template %s failed : %s", clusterName, templateFile, err.Error())
 				return err
 			}
+			signal(options["docker-signal"], options["docker-container"], options["docker-endpoint"])
 
 			if result != prevResult {
 				prevResult = result
 				debug("******** CHANGED DETECTED ****")
-				signal("SIGHUP", "ecswatch_nginx_1", "/var/run/docker.sock")
+				signal(options["docker-signal"], options["docker-container"], options["docker-endpoint"])
 			}
 
 		case <-doneChan:
@@ -53,25 +54,35 @@ func generate(svc *ecs.ECS, clusterName string, templateFile string, outputFile 
 
 }
 
-func signal(signal string, containerName string, socketFile string) {
+func signal(signal string, containerName string, dockerEndpoint string) {
 	// https://gist.github.com/ericchiang/c988d90edcb7eebd54de
-	form := url.Values{}
-	form.Add("signal", "SIGHUP")
 
-	dial, err := net.Dial("unix", socketFile)
+	u, err := url.Parse(dockerEndpoint)
+	if err != nil {
+		debug("error parsing docker Endpoint %s", dockerEndpoint)
+		return
+	}
+
+	debug("Scheme %s , Path %s", u.Scheme, u.Path)
+	dial, err := net.Dial(u.Scheme, u.Path)
+
 	if err != nil {
 		debug("error opening dial ")
 		return
 	}
 	defer dial.Close()
 
+	form := url.Values{}
+	form.Add("signal", signal)
+
+	debug("sending %s to %s", signal, containerName)
 	req, err := http.NewRequest("POST", "/containers/"+containerName+"/kill", strings.NewReader(form.Encode()))
 	// We need to add the type & length otherwise nothing will happen
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Content-Length", strconv.Itoa(len(form.Encode())))
 
 	if err != nil {
-		debug("error opening socker file /var/run/docker.sock")
+		debug("error preparing kill request")
 		return
 	}
 
@@ -82,13 +93,13 @@ func signal(signal string, containerName string, socketFile string) {
 	debug("killing it")
 
 	if err != nil {
-		debug("error opening socker file /var/run/docker.sock")
+		debug("error sending kill signal to %s", dockerEndpoint)
 		return
 	}
 
 }
 
-func generateOne(svc *ecs.ECS, clusterName string, templateFile string, outputFile string) (string, error) {
+func generateOne(svc *ecs.ECS, clusterName string, templateFile string, options map[string]string) (string, error) {
 	var watchInfo, err = getEcsWatchInfo(svc, clusterName)
 
 	if err != nil {
