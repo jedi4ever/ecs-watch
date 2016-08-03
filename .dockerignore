@@ -8,3 +8,5 @@ dist/*linux*386
 vendor/
 ecs-watch
 *.go
+*.env
+README.md
