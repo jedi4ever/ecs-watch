@@ -23,21 +23,21 @@ func getEcsWatchInfo(svc *ecs.ECS, clusterName string) (ecsWatchInfo *EcsWatchIn
 
 	// For each task , retrieve the container info
 	for _, containerInfo := range *containersInfo {
-		ecsWatchContainerInstanceInfo, err := getEcsWatchContainerInstanceInfo(svc, containerInfo.instanceArn)
+		ecsWatchContainerInstanceInfo, err := getEcsWatchContainerInstanceInfo(svc, containerInfo.InstanceArn)
 		if err != nil {
 			debug("[%s] Retrieving ContainerInstance Info for ECS Cluster failed: %s", clusterName, err.Error())
 			return nil, err
 		}
 
 		ecsWatchInfoItem := &EcsWatchInfoItem{
-			publicIp:      ecsWatchContainerInstanceInfo.publicIp,
-			privateIp:     ecsWatchContainerInstanceInfo.privateIp,
-			instanceArn:   containerInfo.instanceArn,
-			taskArn:       containerInfo.taskArn,
-			imageName:     containerInfo.imageName,
-			name:          containerInfo.name,
-			hostPort:      containerInfo.hostPort,
-			containerPort: containerInfo.containerPort,
+			PublicIp:      ecsWatchContainerInstanceInfo.PublicIp,
+			PrivateIp:     ecsWatchContainerInstanceInfo.PrivateIp,
+			InstanceArn:   containerInfo.InstanceArn,
+			TaskArn:       containerInfo.TaskArn,
+			ImageName:     containerInfo.ImageName,
+			Name:          containerInfo.Name,
+			HostPort:      containerInfo.HostPort,
+			ContainerPort: containerInfo.ContainerPort,
 		}
 
 		ecsWatchInfo2 = append(ecsWatchInfo2, *ecsWatchInfoItem)
@@ -82,17 +82,17 @@ func getEcsWatchContainersInfo(svc *ecs.ECS, clusterName string) (ecsWatchContai
 
 			// Create a new ContainerInfo
 			ecsWatchContainerInfo := EcsWatchContainerInfo{}
-			ecsWatchContainerInfo.name = *container.Name
+			ecsWatchContainerInfo.Name = *container.Name
 
 			// Find network Binding
 			for _, binding := range container.NetworkBindings {
-				ecsWatchContainerInfo.containerPort = *binding.ContainerPort
-				ecsWatchContainerInfo.hostPort = *binding.HostPort
+				ecsWatchContainerInfo.ContainerPort = *binding.ContainerPort
+				ecsWatchContainerInfo.HostPort = *binding.HostPort
 				fmt.Println("|", *binding.ContainerPort, "|", *binding.HostPort, "|", *binding.Protocol)
 			}
 
-			ecsWatchContainerInfo.instanceArn = *task.ContainerInstanceArn
-			debug("instanceArn", ecsWatchContainerInfo.instanceArn)
+			ecsWatchContainerInfo.InstanceArn = *task.ContainerInstanceArn
+			debug("instanceArn", ecsWatchContainerInfo.InstanceArn)
 
 			// Find task definition of this container
 			taskDefinition, err := describeTaskDefinition(svc, task)
@@ -164,7 +164,7 @@ func getEcsWatchEc2InstanceInfo(svcEc2 *ec2.EC2, instanceID string) (ec2Info *Ec
 		for _, inst := range resp.Reservations[idx].Instances {
 			if inst.PrivateIpAddress != nil {
 				return &EcsWatchEc2InstanceInfo{
-					privateIp: *inst.PrivateIpAddress,
+					PrivateIp: *inst.PrivateIpAddress,
 				}, nil
 			}
 		}
@@ -202,10 +202,10 @@ func getEcsWatchContainerInstanceInfo(svc *ecs.ECS, instanceArn string) (contain
 	}
 
 	containerInstanceInfo = &EcsWatchContainerInstanceInfo{
-		instanceArn: instanceArn,
-		instanceId:  instanceId,
-		privateIp:   ec2Info.privateIp,
-		publicIp:    ec2Info.publicIp,
+		InstanceArn: instanceArn,
+		InstanceId:  instanceId,
+		PrivateIp:   ec2Info.PrivateIp,
+		PublicIp:    ec2Info.PublicIp,
 	}
 
 	return containerInstanceInfo, nil
