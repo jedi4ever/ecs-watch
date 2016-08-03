@@ -12,6 +12,8 @@ type EcsWatchContainerInfo struct {
 	Status        string
 	Environment   map[string]string
 	Labels        map[string]string
+	Family        string
+	Revision      int64
 }
 
 type EcsWatchContainersInfo []EcsWatchContainerInfo
@@ -37,6 +39,8 @@ type EcsWatchInfoItem struct {
 	PrivateIp     string
 	Environment   map[string]string
 	Labels        map[string]string
+	Family        string
+	Revision      int64
 }
 
 type EcsWatchEc2InstanceInfo struct {

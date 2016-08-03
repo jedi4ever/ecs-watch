@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"fmt"
+	//"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
@@ -38,9 +38,13 @@ func getEcsWatchInfo(svc *ecs.ECS, clusterName string) (ecsWatchInfo *EcsWatchIn
 			TaskArn:       containerInfo.TaskArn,
 			Status:        containerInfo.Status,
 			Image:         containerInfo.Image,
+			Family:        containerInfo.Family,
+			Revision:      containerInfo.Revision,
 			Name:          containerInfo.Name,
 			HostPort:      containerInfo.HostPort,
 			ContainerPort: containerInfo.ContainerPort,
+			Environment:   containerInfo.Environment,
+			Labels:        containerInfo.Labels,
 		}
 
 		ecsWatchInfo2 = append(ecsWatchInfo2, *ecsWatchInfoItem)
@@ -115,6 +119,8 @@ func getEcsWatchContainersInfo(svc *ecs.ECS, clusterName string) (ecsWatchContai
 						ecsWatchContainerInfo.Environment[*pair.Name] = *pair.Value
 					}
 					ecsWatchContainerInfo.Image = *containerDefinition.Image
+					ecsWatchContainerInfo.Revision = *taskDefinition.Revision
+					ecsWatchContainerInfo.Family = *taskDefinition.Family
 
 					// Iterate maps
 					for k, v := range containerDefinition.DockerLabels {
@@ -122,6 +128,7 @@ func getEcsWatchContainersInfo(svc *ecs.ECS, clusterName string) (ecsWatchContai
 						ecsWatchContainerInfo.Labels[k] = *v //debug(containerDefinition.Environment)
 					}
 					//fmt.Println(container)
+					//fmt.Println(containerDefinition)
 				}
 
 			}
@@ -209,7 +216,7 @@ func getEcsWatchContainerInstanceInfo(svc *ecs.ECS, instanceArn string) (contain
 	ec2Info, err := getEcsWatchEc2InstanceInfo(svcEc2, (*resp.ContainerInstances[0].Ec2InstanceId))
 
 	if err != nil {
-		fmt.Println(err.Error())
+		debug(err.Error())
 		return nil, err
 	}
 
@@ -238,7 +245,7 @@ func describeTask(svc *ecs.ECS, clusterName string, taskArn string) (task *ecs.T
 	resp, err := svc.DescribeTasks(params)
 
 	if err != nil {
-		fmt.Println(err.Error())
+		debug(err.Error())
 		return nil, err
 	}
 

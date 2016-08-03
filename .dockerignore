@@ -1,0 +1,10 @@
+dist/*arm*
+dist/*netbsd*
+dist/*freebsd*
+dist/*openbsd*
+dist/*windows*
+dist/*darwin*
+dist/*linux*386
+vendor/
+ecs-watch
+*.go
