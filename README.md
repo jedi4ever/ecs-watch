@@ -19,8 +19,9 @@ USAGE:
    ecs-watch report [command options] [arguments...]
 
 OPTIONS:
-   --cluster value  (default: "default") [$ECSWATCH_CLUSTER]
-   --region value   (default: "eu-west-1") [$ECSWATCH_REGION]
+   --ecs-cluster value  (default: "default") [$ECSWATCH_ECS_CLUSTER]
+   --aws-region value   (default: "eu-west-1") [$ECSWATCH_AWS_REGION]
+
 ```
 
 ```
@@ -39,21 +40,23 @@ instead of reading the state from Consul, it reads the state from ECS.
 
 ```
 NAME:
-   ecs-watch generate - generates a file
+   ecs-watch track - tracks changes inside an ecs cluster
 
 USAGE:
-   ecs-watch generate [command options] [arguments...]
+   ecs-watch track [command options] [arguments...]
 
 OPTIONS:
-   --cluster value           (default: "default") [$ECSWATCH_CLUSTER]
-   --region value            (default: "eu-west-1") [$ECSWATCH_REGION]
-   --template-file value      [$ECSWATCH_TEMPLATE_FILE]
-   --output-file value        [$ECSWATCH_OUTPUT_FILE]
-   --notify-container value   [$ECSWATCH_NOTIFY_CONTAINER]
-   --docker-signal value     (default: "SIGHUP") [$ECSWATCH_DOCKER_SIGNAL]
-   --docker-container value   [$ECSWATCH_DOCKER_CONTAINER]
-   --docker-endpoint value   (default: "unix:///var/run/docker.sock") [$ECSWATCH_DOCKER_ENDPOINT]
-   --watch value             (default: "false") [$ECSWATCH_WATCH]
+   --track-interval value        (default: 5s) [$ECSWATCH_TRACK_INTERVAL]
+   --only-once                    [$ECSWATCH_ONLY_ONCE]
+   --ecs-cluster value           (default: "default") [$ECSWATCH_ECS_CLUSTER]
+   --aws-region value            (default: "eu-west-1") [$ECSWATCH_AWS_REGION]
+   --template-generate            [$ECSWATCH_TEMPLATE_FILE]
+   --template-input-file value    [$ECSWATCH_TEMPLATE_INPUT_FILE]
+   --template-output-file value   [$ECSWATCH_TEMPLATE_OUTPUT_FILE]
+   --docker-notify                [$ECSWATCH_NOTIFY_CONTAINER]
+   --docker-signal value         (default: "SIGHUP") [$ECSWATCH_DOCKER_SIGNAL]
+   --docker-container value       [$ECSWATCH_DOCKER_CONTAINER]
+   --docker-endpoint value       (default: "unix:///var/run/docker.sock") [$ECSWATCH_DOCKER_ENDPOINT]
 ```
 
 ## Route53 sidekick
