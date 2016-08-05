@@ -17,7 +17,7 @@ func track(svc *ecs.ECS, clusterName string, options EcsWatchTrackOptions) error
 		return err
 	}
 
-	tickChan := time.NewTicker(time.Second * options.TrackInterval).C
+	tickChan := time.NewTicker(options.TrackInterval).C
 
 	doneChan := make(chan bool)
 
@@ -32,6 +32,7 @@ func track(svc *ecs.ECS, clusterName string, options EcsWatchTrackOptions) error
 	for {
 		select {
 		case <-tickChan:
+			debug("tick")
 			result, err := templateGenerate(*watchInfo, options)
 			if err != nil {
 				debug("[%s] Generating template %s failed : %s", clusterName, options.TemplateInputFile, err.Error())

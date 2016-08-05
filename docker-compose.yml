@@ -5,7 +5,7 @@
   volumes: 
     - ./nginx.tmpl:/tmp/nginx.tmpl
     - /var/run/docker.sock:/var/run/docker.sock
-  command: "generate --template-file /tmp/nginx.tmpl"
+  command: "track --template-input-file /tmp/nginx.tmpl"
   privileged: true
 nginx:
   ports:
