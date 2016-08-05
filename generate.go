@@ -4,7 +4,18 @@ import "bytes"
 import "path/filepath"
 import "text/template"
 
-func templateGenerate(ecsWatchInfo EcsWatchInfo, options EcsWatchTrackOptions) (string, error) {
+func templateGenerate(ecsWatchInfo EcsWatchInfo, options EcsWatchTrackOptions) error {
+	_, err := templateGenerateString(ecsWatchInfo, options)
+	//result, err := templateGenerateString(ecsWatchInfo, options)
+
+	if err != nil {
+		debug("Generating template failed: %s", err.Error())
+		return err
+	}
+	return nil
+}
+
+func templateGenerateString(ecsWatchInfo EcsWatchInfo, options EcsWatchTrackOptions) (string, error) {
 
 	result, err := templateExecute(ecsWatchInfo, options)
 

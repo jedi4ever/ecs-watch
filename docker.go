@@ -10,13 +10,13 @@ import (
 	"strings"
 )
 
-func dockerSignal(signal string, containerName string, dockerEndpoint string) {
+func dockerSignal(signal string, containerName string, dockerEndpoint string) (err error) {
 	// https://gist.github.com/ericchiang/c988d90edcb7eebd54de
 
 	u, err := url.Parse(dockerEndpoint)
 	if err != nil {
 		debug("error parsing docker Endpoint %s", dockerEndpoint)
-		return
+		return err
 	}
 
 	debug("Scheme %s , Path %s", u.Scheme, u.Path)
@@ -24,7 +24,7 @@ func dockerSignal(signal string, containerName string, dockerEndpoint string) {
 
 	if err != nil {
 		debug("error opening dial ")
-		return
+		return err
 	}
 	defer dial.Close()
 
@@ -39,7 +39,7 @@ func dockerSignal(signal string, containerName string, dockerEndpoint string) {
 
 	if err != nil {
 		debug("error preparing kill request")
-		return
+		return err
 	}
 
 	conn := httputil.NewClientConn(dial, nil)
@@ -50,7 +50,9 @@ func dockerSignal(signal string, containerName string, dockerEndpoint string) {
 
 	if err != nil {
 		debug("error sending kill signal to %s", dockerEndpoint)
-		return
+		return err
 	}
+
+	return nil
 
 }
