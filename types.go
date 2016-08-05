@@ -43,6 +43,14 @@ type EcsWatchInfoItem struct {
 	Revision      int64
 }
 
+func (s EcsWatchInfo) Len() int          { return len(s) }
+func (s EcsWatchInfo) Swap(i int, j int) { s[i], s[j] = s[j], s[i] }
+func (s EcsWatchInfo) Less(i int, j int) bool {
+	key1 := s[i].InstanceId + "-" + s[i].Name
+	key2 := s[j].InstanceId + "-" + s[j].Name
+	return key1 < key2
+}
+
 type EcsWatchEc2InstanceInfo struct {
 	PublicIp  string
 	PrivateIp string

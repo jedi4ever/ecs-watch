@@ -5,6 +5,7 @@ package main
 import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/service/ecs"
+	"reflect"
 	"time"
 )
 
@@ -34,6 +35,7 @@ func track(svc *ecs.ECS, clusterName string, options EcsWatchTrackOptions) error
 			}
 
 			if hasInfoChanged(*lastKnownInfo, *currentInfo) {
+				debug("info has changed")
 
 				if options.TemplateGenerate {
 					err := templateGenerate(*currentInfo, options)
@@ -63,5 +65,7 @@ func track(svc *ecs.ECS, clusterName string, options EcsWatchTrackOptions) error
 }
 
 func hasInfoChanged(lastKnownInfo EcsWatchInfo, currentKnownInfo EcsWatchInfo) (changed bool) {
-	return true
+	// http://stackoverflow.com/questions/24534072/how-to-compare-struct-slice-map-are-equal
+	// https://www.reddit.com/r/golang/comments/369o32/map_with_custom_equality/
+	return !reflect.DeepEqual(lastKnownInfo, currentKnownInfo)
 }
