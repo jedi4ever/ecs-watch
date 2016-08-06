@@ -39,8 +39,8 @@ func main() {
 				cli.BoolFlag{Name: "only-once", EnvVar: "ECSWATCH_ONLY_ONCE"},
 
 				// Future filter items
-				cli.StringFlag{Name: "ecs-cluster", Value: "default", EnvVar: "ECSWATCH_ECS_CLUSTER"},
-				cli.StringFlag{Name: "aws-region", Value: "eu-west-1", EnvVar: "ECSWATCH_AWS_REGION"},
+				cli.StringFlag{Name: "ecs-cluster", Value: "default", EnvVar: "ECSWATCH_ECS_CLUSTER, ECS_CLUSTER"},
+				cli.StringFlag{Name: "aws-region", Value: "eu-west-1", EnvVar: "ECSWATCH_AWS_REGION, AWS_REGION"},
 
 				/*
 					cli.StringFlag{Name: "log-format", Value: "json", EnvVar: "ECSWATCH_LOG_FORMAT"},
@@ -49,7 +49,7 @@ func main() {
 				*/
 
 				/*
-					cli.BoolFlag{Name: "update-route53", EnvVar: "ECSWATCH_UPDATE_ROUTE53"},
+					cli.BoolFlag{Name: "route53-update", EnvVar: "ECSWATCH_UPDATE_ROUTE53"},
 					cli.StringFlag{Name: "route53-zone", EnvVar: "ECSWATCH_REGISTER_ROUTE53_ZONE"},
 					cli.StringFlag{Name: "route53-template", EnvVar: "ECSWATCH_REGISTER_ROUTE53_TEMPLATE"},
 				*/
@@ -62,8 +62,10 @@ func main() {
 				cli.StringFlag{Name: "docker-signal", Value: "SIGHUP", EnvVar: "ECSWATCH_DOCKER_SIGNAL"},
 				cli.StringFlag{Name: "docker-container", EnvVar: "ECSWATCH_DOCKER_CONTAINER"},
 				cli.StringFlag{Name: "docker-endpoint", Value: "unix:///var/run/docker.sock", EnvVar: "ECSWATCH_DOCKER_ENDPOINT"},
+				//cli.StringSliceFlag{Name: "filter", Value: &cli.StringSlice{"Name=*"}, EnvVar: "ECSWATCH_FILTER"},
 
-				// Future - datadog metrics
+				// Future - datadog metrics , events
+				// Future - exec , ip lookup
 				// Future - cloudlogs
 				// Future - sns endpoint
 			},
