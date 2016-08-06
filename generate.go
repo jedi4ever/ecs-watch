@@ -48,3 +48,17 @@ func templateNew(name string) *template.Template {
 	tmpl := template.New(name).Funcs(template.FuncMap{})
 	return tmpl
 }
+
+func groupByVirtualHost(ecsWatchInfo EcsWatchInfo) map[string]EcsWatchInfo {
+
+	infoByHosts := make(map[string]EcsWatchInfo)
+
+	for _, infoItem := range ecsWatchInfo {
+		virtualHost, found := infoItem.Environment["VIRTUAL_HOST"]
+		if found {
+			infoByHosts[virtualHost] = append(infoByHosts[virtualHost], infoItem)
+		}
+	}
+
+	return infoByHosts
+}
