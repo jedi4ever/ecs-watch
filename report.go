@@ -7,11 +7,12 @@ import "github.com/olekukonko/tablewriter"
 
 import "github.com/aws/aws-sdk-go/service/ecs"
 
-func report(svc *ecs.ECS, clusterName string) {
+func report(svc *ecs.ECS, clusterName string) error {
 	var watchInfo, err = getEcsWatchInfo(svc, clusterName)
 
 	if err != nil {
 		debug("[%s] Retrieving report ECS Cluster failed: %s", clusterName, err.Error())
+		return err
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
@@ -36,5 +37,6 @@ func report(svc *ecs.ECS, clusterName string) {
 	}
 
 	table.Render()
+	return nil
 
 }

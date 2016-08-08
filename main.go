@@ -99,6 +99,7 @@ func main() {
 				err := track(svc, clusterName, options)
 
 				if err != nil {
+					cli.NewExitError(err.Error(), -1)
 					debug(err.Error())
 				}
 				return nil
@@ -115,7 +116,11 @@ func main() {
 				svc := ecs.New(session.New(), &aws.Config{Region: aws.String(c.String("aws-region"))})
 				clusterName = c.String("ecs-cluster")
 				debug(clusterName)
-				report(svc, clusterName)
+				err := report(svc, clusterName)
+				if err != nil {
+					cli.NewExitError(err.Error(), -1)
+					debug(err.Error())
+				}
 				return nil
 			},
 		},
