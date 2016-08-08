@@ -45,7 +45,9 @@ func templateExecute(ecsWatchInfo EcsWatchInfo, options EcsWatchTrackOptions) (*
 }
 
 func templateNew(name string) *template.Template {
-	tmpl := template.New(name).Funcs(template.FuncMap{})
+	tmpl := template.New(name).Funcs(template.FuncMap{
+		"groupByVirtualHost": groupByVirtualHost,
+	})
 	return tmpl
 }
 
@@ -54,9 +56,11 @@ func groupByVirtualHost(ecsWatchInfo EcsWatchInfo) map[string]EcsWatchInfo {
 	infoByHosts := make(map[string]EcsWatchInfo)
 
 	for _, infoItem := range ecsWatchInfo {
-		virtualHost, found := infoItem.Environment["VIRTUAL_HOST"]
-		if found {
-			infoByHosts[virtualHost] = append(infoByHosts[virtualHost], infoItem)
+		if infoItem.HostPort != 0 {
+			virtualHost, found := infoItem.Environment["VIRTUAL_HOST"]
+			if found {
+				infoByHosts[virtualHost] = append(infoByHosts[virtualHost], infoItem)
+			}
 		}
 	}
 

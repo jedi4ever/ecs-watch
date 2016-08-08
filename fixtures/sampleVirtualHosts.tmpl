@@ -1,0 +1,6 @@
+{{- range $virtualhost, $containers := groupByVirtualHost $ -}}
+backend {{ $virtualhost }}
+{{- range $index , $container := $containers }}
+ {{ $container.PublicIp }}:{{ $container.HostPort -}}
+{{ end }}
+{{ end -}}
