@@ -99,8 +99,8 @@ func main() {
 				err := track(svc, clusterName, options)
 
 				if err != nil {
-					cli.NewExitError(err.Error(), -1)
 					debug(err.Error())
+					return cli.NewExitError(err.Error(), -1)
 				}
 				return nil
 			},
@@ -118,8 +118,8 @@ func main() {
 				debug(clusterName)
 				err := report(svc, clusterName)
 				if err != nil {
-					cli.NewExitError(err.Error(), -1)
 					debug(err.Error())
+					return cli.NewExitError(err.Error(), -1)
 				}
 				return nil
 			},
