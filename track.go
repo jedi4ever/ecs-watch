@@ -18,6 +18,15 @@ func track(svc *ecs.ECS, clusterName string, options EcsWatchTrackOptions) error
 		return err
 	}
 
+	err = handleOnce(*lastKnownInfo, clusterName, options)
+	if err != nil {
+		return err
+	}
+
+	if options.OnlyOnce {
+		return nil
+	}
+
 	tickChan := time.NewTicker(options.TrackInterval).C
 
 	doneChan := make(chan bool)
@@ -35,26 +44,13 @@ func track(svc *ecs.ECS, clusterName string, options EcsWatchTrackOptions) error
 			}
 
 			if hasInfoChanged(*lastKnownInfo, *currentInfo) {
+				err := handleOnce(*currentInfo, clusterName, options)
+				if err != nil {
+					return err
+				}
 				debug("info has changed")
-
-				if options.TemplateGenerate {
-					err := templateGenerate(*currentInfo, options)
-					if err != nil {
-						debug("[%s] Generating template %s failed : %s", clusterName, options.TemplateInputFile, err.Error())
-						return err
-					}
-				}
-
-				if options.DockerNotify {
-					err := dockerSignal(options.DockerSignal, options.DockerContainer, options.DockerEndpoint)
-
-					if err != nil {
-						debug("[%s] Error sending docker signal %s failed : %s", clusterName, options.DockerContainer, err.Error())
-						return err
-					}
-				}
+				lastKnownInfo = currentInfo
 			}
-			lastKnownInfo = currentInfo
 
 		case <-doneChan:
 			fmt.Println("Done")
@@ -62,6 +58,26 @@ func track(svc *ecs.ECS, clusterName string, options EcsWatchTrackOptions) error
 		}
 	}
 
+}
+
+func handleOnce(currentInfo EcsWatchInfo, clusterName string, options EcsWatchTrackOptions) error {
+	if options.TemplateGenerate {
+		err := templateGenerate(currentInfo, options)
+		if err != nil {
+			debug("[%s] Generating template %s failed : %s", clusterName, options.TemplateInputFile, err.Error())
+			return err
+		}
+	}
+
+	if options.DockerNotify {
+		err := dockerSignal(options.DockerSignal, options.DockerContainer, options.DockerEndpoint)
+
+		if err != nil {
+			debug("[%s] Error sending docker signal %s failed : %s", clusterName, options.DockerContainer, err.Error())
+			return err
+		}
+	}
+	return nil
 }
 
 func hasInfoChanged(lastKnownInfo EcsWatchInfo, currentKnownInfo EcsWatchInfo) (changed bool) {

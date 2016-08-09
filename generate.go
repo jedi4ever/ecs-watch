@@ -1,13 +1,37 @@
 package main
 
 import "bytes"
+import "os"
+import "bufio"
+import "fmt"
+import "strings"
 import "path/filepath"
 import "text/template"
 
 func templateGenerate(ecsWatchInfo EcsWatchInfo, options EcsWatchTrackOptions) error {
-	_, err := templateGenerateString(ecsWatchInfo, options)
+	result, err := templateGenerateString(ecsWatchInfo, options)
 	//result, err := templateGenerateString(ecsWatchInfo, options)
 
+	debug("Generating template")
+
+	if options.TemplateOutputFile != "" {
+		f, err := os.Create(options.TemplateOutputFile)
+		if err != nil {
+			debug("Error creating outpurt file output failed: %s", err.Error())
+			return err
+		}
+		w := bufio.NewWriter(f)
+		n, err := w.WriteString(result)
+		debug("wrote %d bytes", n)
+		if err != nil {
+			debug("Error writing output file output failed: %s", err.Error())
+			return err
+		}
+		w.Flush()
+
+	} else {
+		fmt.Println(result)
+	}
 	if err != nil {
 		debug("Generating template failed: %s", err.Error())
 		return err
@@ -47,6 +71,7 @@ func templateExecute(ecsWatchInfo EcsWatchInfo, options EcsWatchTrackOptions) (*
 func templateNew(name string) *template.Template {
 	tmpl := template.New(name).Funcs(template.FuncMap{
 		"groupByVirtualHost": groupByVirtualHost,
+		"replace":            strings.Replace,
 	})
 	return tmpl
 }
