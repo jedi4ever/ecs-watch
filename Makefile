@@ -12,11 +12,14 @@ build: ecs-watch
 test: build
 	go test
 
+clean:
+	rm ecs-watch
+
 report: build
 	$(STS_EXEC) ./ecs-watch report
 
 generate: build
-	$(STS_EXEC) ./ecs-watch generate --template-file nginx.tmpl --docker-container ecswatch_nginx_1
+	$(STS_EXEC) ./ecs-watch track --only-once --template-generate true --template-input-file nginx.tmpl --docker-notify true --docker-container ecswatch_nginx_1
 
 get:
 	go get github.com/tj/go-debug
@@ -36,9 +39,9 @@ docker-build: docker-dist
 	docker build  . -t ecs-watch:develop
 
 docker-push:
-	$$(aws ecr get-login --region eu-west-1)
+	$(STS_EXEC) $$(aws ecr get-login --region eu-west-1)
 	docker tag ecs-watch:develop $(DOCKER_REPO)/ecs-watch
-	docker push $(DOCKER_REPO)/ecs-watch
+	$(STS_EXEC) docker push $(DOCKER_REPO)/ecs-watch
 
 release:
 	ghr -t $(GITHUB_TOKEN) -u jedi4ever -r ecs-watch --replace `git describe --tags` dist/

@@ -33,7 +33,7 @@ error_log  stderr debug;
 {{ $safehost := replace $virtualhost "." "_" -1 }}
 upstream {{ $safehost }} {
 {{- range $index , $container := $containers }}
-  server {{ $container.PublicIp }}:{{ $container.HostPort }}  max_fails=0 fail_timeout=10s;
+  server {{ $container.PrivateIp }}:{{ $container.HostPort }}  max_fails=0 fail_timeout=10s;
 {{ end }}
     #keepalive 512;
 }

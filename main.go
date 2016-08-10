@@ -4,7 +4,7 @@ import (
 	//"errors"
 	//"fmt"
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
+	//"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ecs"
 	"github.com/urfave/cli"
@@ -71,11 +71,11 @@ func main() {
 			},
 			Action: func(c *cli.Context) error {
 
-				creds := credentials.NewEnvCredentials()
+				//creds := credentials.NewEnvCredentials()
 
 				svc := ecs.New(session.New(), &aws.Config{
-					Region:      aws.String(c.String("aws-region")),
-					Credentials: creds,
+					Region: aws.String(c.String("aws-region")),
+					//Credentials: creds,
 				})
 
 				options := EcsWatchTrackOptions{}
