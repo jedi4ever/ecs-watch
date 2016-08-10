@@ -13,5 +13,6 @@ nginx:
     - /var/run/docker.sock:/var/run/docker.sock
   volumes_from:
     - nginx
-  command: "track --template-generate --template-input-file /templates/nginx.tmpl --template-output-file /etc/nginx/conf.d/default.conf"
+  command: "track --template-generate --template-input-file s3://test-staging-account/nginx.tmpl --template-output-file /etc/nginx/conf.d/default.conf"
+  #command: "track --template-generate --template-input-file /templates/nginx.tmpl --template-output-file /etc/nginx/conf.d/default.conf"
   privileged: true

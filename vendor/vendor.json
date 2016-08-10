@@ -99,6 +99,12 @@
 			"revisionTime": "2015-12-08T20:45:36Z"
 		},
 		{
+			"checksumSHA1": "ndEFDDt1gd5taOeeUrf0T66H+bg=",
+			"path": "github.com/aws/aws-sdk-go/private/protocol/query",
+			"revision": "999b1591218c36d5050d1ba7266eba956e65965f",
+			"revisionTime": "2015-12-08T20:45:36Z"
+		},
+		{
 			"checksumSHA1": "j8UDnDnB59+u1w/qBHKG0PSWH8U=",
 			"path": "github.com/aws/aws-sdk-go/private/protocol/query/queryutil",
 			"revision": "999b1591218c36d5050d1ba7266eba956e65965f",
@@ -107,6 +113,12 @@
 		{
 			"checksumSHA1": "WRZcRqV95LFgq5V09PmDmSmNTEw=",
 			"path": "github.com/aws/aws-sdk-go/private/protocol/rest",
+			"revision": "999b1591218c36d5050d1ba7266eba956e65965f",
+			"revisionTime": "2015-12-08T20:45:36Z"
+		},
+		{
+			"checksumSHA1": "KVdpXAG2PmIyopNC4jJd/JdjefA=",
+			"path": "github.com/aws/aws-sdk-go/private/protocol/restxml",
 			"revision": "999b1591218c36d5050d1ba7266eba956e65965f",
 			"revisionTime": "2015-12-08T20:45:36Z"
 		},
@@ -137,6 +149,12 @@
 		{
 			"checksumSHA1": "CVc7gTkw4skhZqAXOqOikl9q2w4=",
 			"path": "github.com/aws/aws-sdk-go/service/ecs",
+			"revision": "999b1591218c36d5050d1ba7266eba956e65965f",
+			"revisionTime": "2015-12-08T20:45:36Z"
+		},
+		{
+			"checksumSHA1": "NAitp0A1zE3Zry+Z41LOlCr+9lQ=",
+			"path": "github.com/aws/aws-sdk-go/service/s3",
 			"revision": "999b1591218c36d5050d1ba7266eba956e65965f",
 			"revisionTime": "2015-12-08T20:45:36Z"
 		},

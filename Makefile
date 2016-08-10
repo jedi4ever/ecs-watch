@@ -9,6 +9,9 @@ ecs-watch: *.go
 
 build: ecs-watch
 
+test: build
+	go test
+
 report: build
 	$(STS_EXEC) ./ecs-watch report
 
@@ -39,3 +42,7 @@ docker-push:
 
 release:
 	ghr -t $(GITHUB_TOKEN) -u jedi4ever -r ecs-watch --replace `git describe --tags` dist/
+
+s3template-upload:
+	$(STH_EXEC) aws s3 cp ./nginx.tmpl s3://$(TEMPLATE_BUCKET)/nginx.tmpl
+

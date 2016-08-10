@@ -249,3 +249,11 @@ func TestTemplateGenerateString(t *testing.T) {
 	}
 
 }
+
+func TestTemplateS3Get(t *testing.T) {
+	_, err := templateGetS3("test-staging-account", "nginx.tmpl")
+	if err != nil {
+		t.Error("template generation failed")
+	}
+
+}
