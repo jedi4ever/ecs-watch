@@ -1,15 +1,17 @@
-"ecs-watch":
-  env_file:
-    docker.env
-  image: ecs-watch:develop
-  volumes: 
-    - ./nginx.tmpl:/tmp/nginx.tmpl
-    - /var/run/docker.sock:/var/run/docker.sock
-  command: "track --template-input-file /tmp/nginx.tmpl"
-  privileged: true
 nginx:
   ports:
     - 8888:80
   image: nginx
   volumes:
-    - ./nginx.tmpl:/etc/nginx/nginx.conf
+    - ./nginx:/etc/nginx/conf.d
+"ecs-watch":
+  env_file:
+    docker.env
+  image: ecs-watch:develop
+  volumes: 
+    - ./nginx.tmpl:/templates/nginx.tmpl
+    - /var/run/docker.sock:/var/run/docker.sock
+  volumes_from:
+    - nginx
+  command: "track --template-generate --template-input-file /templates/nginx.tmpl --template-output-file /etc/nginx/conf.d/default.conf"
+  privileged: true
