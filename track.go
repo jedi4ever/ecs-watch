@@ -62,6 +62,7 @@ func track(svc *ecs.ECS, clusterName string, options EcsWatchTrackOptions) error
 
 func handleOnce(currentInfo EcsWatchInfo, clusterName string, options EcsWatchTrackOptions) error {
 	if options.TemplateGenerate {
+		debug("generating template")
 		err := templateGenerate(currentInfo, options)
 		if err != nil {
 			debug("[%s] Generating template %s failed : %s", clusterName, options.TemplateInputFile, err.Error())
@@ -70,6 +71,7 @@ func handleOnce(currentInfo EcsWatchInfo, clusterName string, options EcsWatchTr
 	}
 
 	if options.DockerNotify {
+		debug("notifying docker")
 		err := dockerSignal(options.DockerSignal, options.DockerContainer, options.DockerEndpoint)
 
 		if err != nil {
