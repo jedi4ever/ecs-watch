@@ -39,7 +39,7 @@ docker-build: docker-dist
 	docker build  . -t ecs-watch:develop
 
 docker-push:
-	$(STS_EXEC) $$(aws ecr get-login --region eu-west-1)
+	$$( $(STS_EXEC) aws ecr get-login --region eu-west-1)
 	docker tag ecs-watch:develop $(DOCKER_REPO)/ecs-watch
 	$(STS_EXEC) docker push $(DOCKER_REPO)/ecs-watch
 
